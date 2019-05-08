@@ -16,3 +16,17 @@ public static float DegreeToRadian(float degree)
     return degree * Mathf.PI / 180f;
 }
 
+/// <summary>
+/// Copies component of any type from one object to another.
+/// </summary>
+T CopyComponent<T>(T from, GameObject to) where T : Component
+{
+    System.Type type = from.GetType();
+    Component copy = to.AddComponent(type);
+    System.Reflection.FieldInfo[] fields = type.GetFields();
+    foreach (System.Reflection.FieldInfo field in fields)
+    {
+        field.SetValue(copy, field.GetValue(from));
+    }
+    return copy as T;
+}
